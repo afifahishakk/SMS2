@@ -1,5 +1,5 @@
 @extends('layout.master')
-
+{{-- {{dd($payment)}} --}}
 @section('content')
 
 <div class='row'>
@@ -13,7 +13,8 @@
             <div class='float-right'>
               <p class='mb-0 text-right'>Paid Fees</p>
               <div class='fluid-container'>
-                <h3 class='font-weight-medium text-right mb-0'>RM</h3>
+                <h3 class='font-weight-medium text-right mb-0'>RM {{$total_paid_amount}}</h3>
+                <p class='font-weight-medium text-right mb-0'>of RM {{$total_amount}}</p>
               </div>
             </div>
           </div>
@@ -33,7 +34,7 @@
             <div class='float-right'>
               <p class='mb-0 text-right'>Teacher</p>
               <div class='fluid-container'>
-                <h3 class='font-weight-medium text-right mb-0'></h3>
+                <h3 class='font-weight-medium text-right mb-0'>{{$total_teachers}}</h3>
               </div>
             </div>
           </div>
@@ -53,7 +54,7 @@
             <div class='float-right'>
               <p class='mb-0 text-right'>Parent</p>
               <div class='fluid-container'>
-                <h3 class='font-weight-medium text-right mb-0'></h3>
+                <h3 class='font-weight-medium text-right mb-0'>{{$total_parents}}</h3>
               </div>
             </div>
           </div>
@@ -73,7 +74,7 @@
             <div class='float-right'>
               <p class='mb-0 text-right'>Enrollment</p>
               <div class='fluid-container'>
-                <h3 class='font-weight-medium text-right mb-0'></h3>
+                <h3 class='font-weight-medium text-right mb-0'>{{$total_students}}</h3>
               </div>
             </div>
           </div>

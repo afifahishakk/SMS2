@@ -2,14 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Academic extends Model
+class Academic extends Authenticatable
 {
-    use HasFactory;
+    use Notifiable;
+    protected $table = 'academics';
+    public $incrementing = FALSE;
 
     public function student(){
         return $this->belongsTo(Student::class, 'student_id', 'id');
+    }
+    public function academic_type(){
+        return $this->belongsTo(Academic_Type::class, 'a_type_id', 'id');
     }
 }

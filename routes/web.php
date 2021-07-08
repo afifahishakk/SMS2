@@ -51,9 +51,8 @@ Route::get('/', function () {
 });
 
 // dashboard ikut user //
-route::get('/dashboard', function(){
-    return view('dashboard');
-});
+
+Route::resource('dashboard', 'App\Http\Controllers\DashboardController');
 
 Route::get('/dashboardTeacherTahfiz', function () {
     $announcements = Announcement::orderBy('id','asc')->paginate(5);
@@ -74,7 +73,8 @@ Route::get('/dashboardParent', function () {
 // monthly report //
 Route::get('/monthly-report', function (Request $request) {
     if($request->has('month') && $request->has('year')){
-        $payments = Payment::all();
+        $payments = Payment::where('month', $request->month)->where('year',$request->year)->get();
+        // dd($payments);
         $total_paid = 0;
         foreach($payments as $payment){
             $total_paid += $payment->paid_amount;
@@ -122,6 +122,25 @@ Route::get('/annual-report', function () {
     return view('report/annualReport');
 });
 
+// annual report //
+Route::get('/annual-report', function (Request $request) {
+    if($request->has('year')){
+        $payments = Payment::where('year',$request->year)->get();
+        // dd($payments);
+        $total_paid = 0;
+        foreach($payments as $payment){
+            $total_paid += $payment->paid_amount;
+        }
+        $year = $request->year;
+        
+    }else{
+        $total_paid = 0;
+        $year = '';
+    }
+
+    return view('report/annualReport', compact('total_paid', 'year'));
+})->name('annual-report');
+
 
 Route::get('/parents', [StudentController::class, 'indexChild'])->name('parents.indexChild');
 Route::get('/parents/createChild', [StudentController::class, 'createChild']);
@@ -134,12 +153,15 @@ Route::get('/enrollment-status', function () {
 });
 
 Route::get('/view-child-performance', function () {
-    $hafazans = Hafazan::all();
-    $academics = Academic::all();
-    $students = Student::all();
 
-    return view('childPerformance.index', compact('hafazans', 'academics', 'students'));
+    $students = Student::where('parent' ,session('ID'))->get();
+    // dd($students);
+
+    return view('childPerformance.index', compact('students'));
 });
+Route::get('/view-child-performance/{id_student}', [HafazanController::class, 'viewChildPerformance']);
+Route::get('/view-child-performance/{id_student}/{week}/{month}/{year}/showPerformance', [HafazanController::class, 'childShowPerformance']);
+
 
 Route::get('/child-hafazan-performance-details/{id}', function ($id) {
     $hafazansMon = Hafazan::where('student_id', $id)->where('day', "Mon")->get();
@@ -155,26 +177,27 @@ Route::get('/child-hafazan-performance-details/{id}', function ($id) {
 });
 
 Route::get('/child-academic-performance-details/{id}', function ($id) {
-    $firstexams = Academic::where('a_type_id', 1)->get();
-    $secondexams = Academic::where('a_type_id', 2)->get();
-    $thirdexams = Academic::where('a_type_id', 3)->get();
-    $fourthexams = Academic::where('a_type_id', 4)->get();
-    $fifthexams = Academic::where('a_type_id', 5)->get();
+    
     $student = Student::find($id);
-    return view('childPerformance.academicPerformanceDetails', compact('student', 'firstexams', 'secondexams', 'thirdexams', 'fourthexams', 'fifthexams'));
+    return view('childPerformance.academicPerformanceDetails', compact('student'));
 });
 
 Route::get('/payment-history', function () {
-    $payments = Payment::orderBy('id','asc')->paginate(5);
+    $payments = Payment::orderBy('id','asc')->get();
     $students = Student::all();
     return view('guardians.paymentHistory', compact('payments', 'students'));
 });
 
+Route::get('/payment-history/{id_payment}/{id_student}/balance', [PaymentController::class, 'edit']);
+
+
 Route::get('/pay-monthly-fee', function () {
-    $monthlyFees = MonthlyFee::orderBy('id','asc')->paginate(5);
+    $monthlyFees = MonthlyFee::orderBy('id','asc')->get();
     $students = Student::all();
     return view('guardians.payMonthlyFee', compact('students', 'monthlyFees'));
 });
+Route::post('/pay-monthly-fee/fetchStudent', [PaymentController::class, 'fetchStudent'])->name('fetchStudent');
+
 
 Route::get('/pay-registration-fee', function () {
     $fees = Fee::where('fee_category_id', 1)->get();
@@ -197,6 +220,10 @@ Route::get('/pay-student-monthly-fee', function () {
     return view('payment.payStudentMonthlyFee', compact('students', 'monthlyFees'));
 });
 
+Route::post('/payment/fetchRegistrationPayment', 'App\Http\Controllers\PaymentController@fetchRegistrationPayment')->name('payment.fetchRegistrationPayment');
+Route::post('/payment/{id}/approveRegistrationFee', 'App\Http\Controllers\PaymentController@approveRegistrationFee')->name('payment.approveRegistrationFee');
+Route::post('/paymentMonthly/fetchMonthlyPayment', 'App\Http\Controllers\PaymentController@fetchMonthlyPayment')->name('payment.fetchMonthlyPayment');
+Route::post('/paymentMonthly/{id}/approveMonthlyFee', 'App\Http\Controllers\PaymentController@approveMonthlyFee')->name('payment.approveMonthlyFee');
 
 
 Route::get('/listHafazanPerformance', [HafazanController::class, 'listHafazan'])->name('hafazan.listHafazan');
@@ -221,6 +248,7 @@ Route::resources([
     'monthlyFee' => MonthlyFeeController::class,
     'payment' => PaymentController::class,
 ]);
+Route::get('/paymentMonthly', [PaymentController::class, 'indexMonthly'])->name('payment.indexMonthly');
 
 
 Route::get('/guardians', [GuardianController::class, 'index'])->name('guardian.index');
@@ -233,21 +261,26 @@ Route::delete('/guardians/{guardian}', [GuardianController::class, 'destroy'])->
 Route::post('/registrationPayment', [PaymentController::class, 'fee'])->name('payment.fee');
 Route::get('/registrationPaymentlist', [PaymentController::class, 'index'])->name('payment.registrationPaymentlist');
 
-Route::post('/MonthlyPayment', [PaymentController::class, 'monthlyfee'])->name('payment.monthlyfee');
+Route::post('/monthlyPayment', [PaymentController::class, 'monthlyfee'])->name('payment.monthlyfee');
 // Route::get('/MonthlyPaymentlist', [PaymentController::class, 'index'])->name('payment.MonthlyPaymentlist');
 
-
+Route::post('/student/decline', [StudentController::class, 'decline'])->name('student.decline');
+Route::post('/student/approve', [StudentController::class, 'approve'])->name('student.approve');
 Route::get('/admins', [AdminController::class, 'index']);
 Route::get('/admins/{admin}/edit', [AdminController::class, 'edit'])->name('admin.edit');
 
+Route::get('/hafazan/{id_student}/{week}/{month}/{year}/showPerformance', [HafazanController::class, 'showPerformance'])->name('hafazan.showPerformance');
+
 
 Route::get('/student-performance', function () {
-    $hafazans = Hafazan::all();
-    $academics = Academic::all();
     $students = Student::all();
 
-    return view('student.performanceStudent', compact('hafazans', 'academics', 'students'));
+    return view('student.performanceStudent', compact('students'));
 });
+
+Route::get('/student-performance/{id_student}', [HafazanController::class, 'viewStudentPerformance']);
+Route::get('/student-performance/{id_student}/{week}/{month}/{year}/showPerformance', [HafazanController::class, 'childShowPerformance']);
+
 
 Route::get('/student-hafazan-performance-details/{id}', function ($id) {
     $hafazansMon = Hafazan::where('student_id', $id)->where('day', "Mon")->get();
@@ -272,9 +305,3 @@ Route::get('/student-academic-performance-details/{id}', function ($id) {
     return view('student.academicPerformanceDetails', compact('student', 'firstexams', 'secondexams', 'thirdexams', 'fourthexams', 'fifthexams'));
 });
 
-
-Route::get('/update-monthly-status', function () {
-    $payments = Payment::orderBy('id','asc')->paginate(20);
-    $students = Student::all();
-    return view('payment.monthlyPaymentList', compact('students', 'payments'));
-});

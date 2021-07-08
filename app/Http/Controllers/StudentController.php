@@ -54,6 +54,7 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $request->validate([
             'name' => 'required',
             'ic_no' => 'required',
@@ -97,6 +98,7 @@ class StudentController extends Controller
         $student->address = $address;
         $student->parent = $parent;
         $student->purpose = $purpose;
+        $student->status = 'Pending';
         $student->photo = $student_image;
         $student->ic_copy = $studentIC_image;
 
@@ -108,6 +110,7 @@ class StudentController extends Controller
 
     public function storeChild(Request $request)
     {
+        // dd($request);
         $request->validate([
             'name' => 'required',
             'ic_no' => 'required',
@@ -138,7 +141,8 @@ class StudentController extends Controller
         $dob = $request->dob;
         $gender_id = $request->gender_id;
         $address = $request->address;
-        $parent = $request->parent;
+        $purpose = $request->purpose;
+
 
         $student = new Student();
 
@@ -147,9 +151,12 @@ class StudentController extends Controller
         $student->dob = $dob;
         $student->gender_id = $gender_id;
         $student->address = $address;
-        $student->parent = $parent;
+        $student->parent = session('ID');
         $student->photo = $student_image;
+        $student->purpose = $purpose;
+        $student->status = 'Pending';
         $student->ic_copy = $studentIC_image;
+        
 
         $student->save();
 
@@ -224,5 +231,27 @@ class StudentController extends Controller
 
         return redirect()->route('student.index')
                         ->with('success','Student deleted successfully.');
+    }
+
+    public function decline(Request $request){
+        
+        $student = Student::find($request->user_id);
+
+        $student->status = 'Declined';
+        $student->save();
+
+        return redirect()->route('student.index')
+                        ->with('success','Student has been declined.');
+
+    }
+
+    public function approve(Request $request){
+        $student = Student::find($request->user_id);
+
+        $student->status = 'Approved';
+        $student->save();
+
+        return redirect()->route('student.index')
+                        ->with('success','Student has been approved.');
     }
 }

@@ -12,31 +12,17 @@
               <tr>
                 <th>Student</th>
                 <th>Name</th>
-                <th>Week</th>
-                <th>Month</th>
-                <th>Year</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-                @foreach($hafazans as $hafazan)
+                @foreach($students as $student)
                     <tr>
-                        <td><img src="/image/students/{{ $hafazan->student->photo }}"/></td>
-                        <td>{{ $hafazan->student->name }}</td>
-                        <td>{{ $hafazan->day }}</td>
-                        <td>{{ $hafazan->week }}</td>
-                        <td>{{ $hafazan->month }}</td>
-                        <td>{{ $hafazan->year }}</td>
+                        <td><img src="/image/students/{{ $student->photo }}"/></td>
+                        <td>{{ $student->name }}</td>
                         <td>
-                            {{-- <form action="" method="POST">
-                                <a  href=""><i class="mdi mdi-pencil-outline text-warning"></i></a>
-
-                                @csrf
-                                @method('DELETE')
-
-                                <button  class="btn btn-icons" type="submit"><i class="mdi mdi-delete-outline text-danger"></i></button>
-                            </form> --}}
-                            <a href="{{ route('hafazan.show',$hafazan->id) }}" data-toggle='tooltip' data-placement='left' title='View'>
+                            
+                            <a href="{{ route('hafazan.show',$student->id) }}" data-toggle='tooltip' data-placement='left' title='View'>
                                 <i class='mdi mdi-comment-text-outline text-primary'></i>
                             </a>
                         </td>

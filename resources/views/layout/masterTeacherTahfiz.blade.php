@@ -25,6 +25,7 @@
  <link rel="stylesheet" href="/assets/css/demo_1/style.css">
  <!-- End Layout styles -->
  <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+ @stack('styles')
 
 
 </head>
@@ -58,9 +59,12 @@
     {{-- <script src="assets/js/demo_1/dashboard.js"></script> --}}
     <!-- End custom js for this page-->
     <script src="/assets/js/shared/jquery.cookie.js" type="text/javascript"></script>
+   
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  @stack('scripts')
 </body>
 </html>
 

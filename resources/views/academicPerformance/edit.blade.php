@@ -18,20 +18,22 @@
               <div class="col-md-4">
                 <div class="form-group">
                     <label>Student</label>
-                    <select class="form-control" name="student_ic"  />
-                    <option value="{{ $academic->student_ic }}">{{ $academic->student_ic }}</option>
-
+                    <select class="form-control" name="student_id">
+                    <option value="{{ $academic->student_id }}">{{ $academic->student->name }}</option>
+                      @foreach ($students as $item )
+                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                      @endforeach
                     </select>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                     <label>Exam Type</label>
-                    <select class="form-control" name="a_type_id"  />
-                    <option value="">{{ $academic->a_type_id }}</option>
-                    {{-- @foreach ($academic_type as $item )
+                    <select class="form-control" name="a_type_id">
+                    <option value="{{ $academic->a_type_id }}">{{ $academic->academic_type->a_type }}</option>
+                    @foreach ($academic_types as $item )
                         <option value="{{ $item->id }}">{{ $item->a_type }}</option>
-                    @endforeach --}}
+                    @endforeach
                     </select>
                 </div>
               </div>

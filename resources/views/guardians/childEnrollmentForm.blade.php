@@ -33,7 +33,7 @@
                         <div class="col-md-3">
                           <div class="form-group">
                               <label>IC/Passport (eg: 032012015482)</label>
-                              <input type="number" class="form-control" name="ic" value="" placeholder="Children IC" required />
+                              <input type="number" class="form-control" name="ic_no" value="" placeholder="Children IC" required />
                           </div>
                         </div>
                         <div class="col-md-6">
@@ -53,7 +53,7 @@
                         <div class="col-md-3">
                           <div class="form-group">
                               <label>Gender</label>
-                              <select class="form-control" name="gender_id" required />
+                              <select class="form-control" name="gender_id" required>
                                   <option value="">- choose gender -</option>
                                     @foreach ($genders as $item )
                                         <option value="{{ $item->id }}">{{ $item->gender }}</option>

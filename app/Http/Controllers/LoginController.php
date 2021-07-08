@@ -117,7 +117,8 @@ class LoginController extends Controller
                 'username' => $username,
                 'photo' => $photo,
                 'UserID' => $user[0]->UserID,
-                'UserLvl' => $user[0]->UserLvl
+                'UserLvl' => $user[0]->UserLvl,
+                'ID' => $user[0]->id
                 //kat sini tambah gambar
             ]);
 

@@ -13,7 +13,7 @@
             </a>
           </li>
       <li class="nav-item">
-        <a class="nav-link" href="/">
+        <a class="nav-link" href="/dashboard">
           <i class="menu-icon typcn typcn-document-text"></i>
           <span class="menu-title">Dashboard</span>
         </a>
@@ -130,7 +130,7 @@
                       <a class='nav-link' href="/payment">Update Registration Status</a>
                 </li>
                 <li class='nav-item'>
-                      <a class='nav-link' href="/update-monthly-status">Update Monthly Status</a>
+                      <a class='nav-link' href="/paymentMonthly">Update Monthly Status</a>
                 </li>
               </ul>
         </div>

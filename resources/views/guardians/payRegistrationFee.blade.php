@@ -160,11 +160,19 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Choose Your Child & Payment Option</h4>
-                <form method="post" action="payment_gateway.php" enctype="multipart/form-data">
-                <input type="hidden" name="payment_date" value="">
+                <form method="post" action="{{route('payment.fee')}}" enctype="multipart/form-data">
+                @csrf
+                @php
+                    use Carbon\Carbon;
+                    $date = Carbon::now();
+                    $date->toDateString();
+                @endphp     
+                <input type="hidden" name="payment_date" value="{{$date}}">
                 <input type="hidden" name="p_type_id" value="1">
-                <input type="hidden" name="parent" value=" ">
-                <input type="hidden" name="amount" value="">
+                <input type="hidden" name="parent" value="{{session('UserID')}}">
+                <input type="hidden" name="amount" value="{{ $jumlah }}">
+                <input type="hidden" name="month" value="0">
+                <input type="hidden" name="year" value="0">
                 <div class="form-body">
                     <p class="card-description text-primary">
                         <i class='menu-icon mdi mdi-account-star'></i> Choose your children
@@ -173,13 +181,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>children</label>
-                                <select class="form-control" name="student_ic" required />
+                                <select class="form-control" name="student_ic" required>
                                     <option value="">- choose your child -</option>
                                     @foreach ($students as $student)
                                         @if(($student->status == "Processing") || ($student->status == "Rejected"))
-                                            <option class='bg-danger text-white' value='{{ $student->ic }}' disabled>{{ $student->name }}</option>
+                                            <option class='bg-danger text-white' value='{{ $student->ic_no }}' disabled>{{ $student->name }}</option>
                                         @else
-                                            <option value='{{ $student->ic }}'>{{ $student->name }}</option>
+                                            <option value='{{ $student->ic_no }}'>{{ $student->name }}</option>
                                         @endif
                                     @endforeach
                                 </select>

@@ -17,11 +17,24 @@
               </tr>
             </thead>
             <tbody>
-                @foreach($academics as $academic)
+                @foreach($students as $student)
                     <tr>
-                        <td><img src="/image/students/{{ $academic->student->photo }}" width="100px"></td>
-                        <td>{{ $academic->student->name }}</td>
-                        <td>{{ $academic->year }}</td>
+                        <td><img src="/image/students/{{ $student->photo }}" width="100px"></td>
+                        <td>{{ $student->name }}</td>
+                        <td>
+                          @if($student->academic->count() > 0)
+                            @foreach($student->academic as $academic)
+                              @php
+                                  $year =[];
+                                  $year[$academic->year] = $academic->year;
+                              @endphp
+                            @endforeach
+                            {{implode('', $year)}}
+                          @else
+                          Year
+                          @endif
+                          
+                        </td>
                         <td>
                             {{-- <form action="" method="POST">
                                 <a  href=""><i class="mdi mdi-pencil-outline text-warning"></i></a>
@@ -31,7 +44,7 @@
 
                                 <button  class="btn btn-icons" type="submit"><i class="mdi mdi-delete-outline text-danger"></i></button>
                             </form> --}}
-                            <a href="{{ route('academic.show',$academic->id) }}" data-toggle='tooltip' data-placement='left' title='View'>
+                            <a href="{{ route('academic.show',$student->id) }}" data-toggle='tooltip' data-placement='left' title='View'>
                                 <i class='mdi mdi-comment-text-outline text-primary'></i>
                             </a>
                         </td>

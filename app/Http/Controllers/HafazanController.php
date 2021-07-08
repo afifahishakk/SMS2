@@ -14,16 +14,16 @@ class HafazanController extends Controller
      */
     public function index()
     {
-        $hafazans = Hafazan::orderBy('id','asc')->paginate(5);
+        $hafazans = Hafazan::orderBy('id','asc')->get();
         $students = Student::all();
 
         return view('hafazanPerformance.index', compact('hafazans', 'students'));
     }
     public function listHafazan()
     {
-        $hafazans = Hafazan::orderBy('id','asc')->paginate(5);
-        $students = Student::all();
-        return view('hafazanPerformance.listHafazanPerformance', compact('hafazans', 'students'));
+        $students = Student::where('purpose','!=' ,'SPM')->get();
+
+        return view('hafazanPerformance.listHafazanPerformance', compact('students'));
     }
 
     /**
@@ -120,12 +120,8 @@ class HafazanController extends Controller
         $month = date("M", strtotime($date));
         $year = date("Y", strtotime($date));
 
-        ceil(date('d')/7);
-        function getWeekday($date){
-            return ceil(date('d',strtotime($date))/7);
-        }
-        $week = ceil(date('d')/7);
-
+        $week = $this->getWeekday($date);
+        // dd($day);
         $hafazan = new Hafazan;
 
         // $student = Student::where('ic_no', $student_ic)->first();
@@ -180,16 +176,36 @@ class HafazanController extends Controller
      */
     public function show($id)
     {
-        $hafazansMon = Hafazan::where('student_id', $id)->where('day', "Mon")->get();
-        $hafazansTue = Hafazan::where('student_id', $id)->where('day', 'Tue')->get();
-        $hafazansWed = Hafazan::where('student_id', $id)->where('day', 'Wed')->get();
-        $hafazansThu = Hafazan::where('student_id', $id)->where('day', 'Thu')->get();
-        $hafazansFri = Hafazan::where('student_id', $id)->where('day', 'Fri')->get();
-        $hafazansSat = Hafazan::where('student_id', $id)->where('day', 'Sat')->get();
-        $hafazansSun = Hafazan::where('student_id', $id)->where('day', 'Sun')->get();
         $student = Student::find($id);
-        $hafazans = Hafazan::find($id);
-        return view('hafazanPerformance.showHafazanPerformance', compact('student', 'hafazans', 'hafazansMon', 'hafazansTue','hafazansWed','hafazansThu','hafazansFri','hafazansSat','hafazansSun'));
+        $hafazans = Hafazan::where('student_id', $id)->groupBy('week','month','year')->get();
+        // dd($hafazans);
+        return view('hafazanPerformance.listWeekHafazanPerformance', compact('student','hafazans'));
+    }
+
+    public function showPerformance($id_student,$week,$month,$year){
+        
+        $student = Student::find($id_student);
+        $hafazans = Hafazan::where('week', $week)->where('month', $month)->where('year', $year)->get();
+
+        return view('hafazanPerformance.showHafazanPerformance', compact('student','hafazans'));
+
+    }
+
+    public function childShowPerformance($id_student,$week,$month,$year){
+        
+        $student = Student::find($id_student);
+        $hafazans = Hafazan::where('week', $week)->where('month', $month)->where('year', $year)->get();
+
+        return view('childPerformance.hafazanPerformanceDetails', compact('student','hafazans'));
+
+    }
+    public function studentShowPerformance($id_student,$week,$month,$year){
+        
+        $student = Student::find($id_student);
+        $hafazans = Hafazan::where('week', $week)->where('month', $month)->where('year', $year)->get();
+
+        return view('student.hafazanPerformanceDetails', compact('student','hafazans'));
+
     }
 
     /**
@@ -253,10 +269,9 @@ class HafazanController extends Controller
         $year = date("Y", strtotime($date));
 
         ceil(date('d')/7);
-        function getWeekday($date){
-            return ceil(date('d',strtotime($date))/7);
-        }
-        $week = ceil(date('d')/7);
+        $week = $this->getWeekday($date);
+        
+        // $week = ceil(date('d')/7);
 
         // dd($request->all(), $day, $month, $year, $week);
 
@@ -319,5 +334,23 @@ class HafazanController extends Controller
         $data['hafazans'] = Hafazan::orderBy('id','asc')->paginate(5);
 
         return view('student.performanceStudent', $data);
+    }
+
+    public function getWeekday($date){
+        return ceil(date('d',strtotime($date))/7);
+    }
+
+    public function viewChildPerformance($id_student){
+        $student = Student::find($id_student);
+        $hafazans = Hafazan::where('student_id', $id_student)->groupBy('week','month','year')->get();
+        // dd($hafazans);
+        return view('childPerformance.viewChildHafazanPerformance', compact('student','hafazans'));
+    }
+
+    public function viewStudentPerformance($id_student){
+        $student = Student::find($id_student);
+        $hafazans = Hafazan::where('student_id', $id_student)->groupBy('week','month','year')->get();
+        // dd($hafazans);
+        return view('student.viewStudentHafazanPerformance', compact('student','hafazans'));
     }
 }

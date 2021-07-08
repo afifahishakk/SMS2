@@ -35,7 +35,15 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label><b>Year</b></label>
-                                <p>{{ $student->academic[0]->select('year')->groupBy('year')->first()->year }}</p>
+                                <p>@if($student->academic->count() > 0)
+                                    @foreach($student->academic as $academic)
+                                      @php
+                                          $year =[];
+                                          $year[$academic->year] = $academic->year;
+                                      @endphp
+                                  @endforeach
+                                  {{implode('', $year)}}
+                                  @endif</p>
                             </div>
                         </div>
                     </div>
@@ -57,50 +65,105 @@
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        @foreach ($firstexams as $academic)
-                                            <tr class="table-warning">
-                                                <td>Penilaian Peperiksaan 1</td>
-                                                <td>{{ $academic->BM }}</td>
-                                                <td>{{ $academic->BA }}</td>
-                                                <td>{{ $academic->MM }}</td>
-                                                <td>{{ $academic->SN }}</td>
-                                                <td>{{ $academic->SEJ }}</td>
-                                                <td>{{ $academic->PQS }}</td>
-                                                <td>{{ $academic->PSI }}</td>
-                                            </tr>
-                                        @endforeach
-                                        @foreach ($secondexams as $academic)
-                                            <tr class="table-secondary">
-                                                <td>Peperiksaan Pertengahan Tahun</td>
-                                                <td>{{ $academic->BM }}</td>
-                                                <td>{{ $academic->BA }}</td>
-                                                <td>{{ $academic->MM }}</td>
-                                                <td>{{ $academic->SN }}</td>
-                                                <td>{{ $academic->SEJ }}</td>
-                                                <td>{{ $academic->PQS }}</td>
-                                                <td>{{ $academic->PSI }}</td>
-                                            </tr>
-                                        @endforeach
-                                        {{-- <tr class="table-warning">
-                                            <td>Peperiksaan Percubaan</td>
-                                            <td>BM</td>
-                                            <td>BA</td>
-                                            <td>MM</td>
-                                            <td>SN</td>
-                                            <td>SEJ</td>
-                                            <td>PQS</td>
-                                            <td>PSI</td>
-                                        </tr>
-                                        <tr class="table-secondary">
-                                            <td>Peperiksaan Akhir Tahun</td>
-                                            <td>BM</td>
-                                            <td>BA</td>
-                                            <td>MM</td>
-                                            <td>SN</td>
-                                            <td>SEJ</td>
-                                            <td>PQS</td>
-                                            <td>PSI</td>
-                                        </tr> --}}
+                                        @if($student->academic->count() > 0)
+                                    @foreach($student->academic as $key=>$academic)
+                                    @if($key % 2)
+                                      <tr class="table-warning">
+                                    @else
+                                      <tr class="table-secondary">
+                                    @endif
+                                        <td>{{$academic->academic_type->a_type}}</td>
+                                        <td>{{$academic->BM}}
+                                          @php
+                                            $grades = (
+                                            ($academic->BM >= 80) ? " (A)" :
+                                              (($academic->BM >= 65 && $academic->BM < 80) ? " (B)" :
+                                              (($academic->BM >= 50 && $academic->BM < 65) ? " (C)" :
+                                              (($academic->BM >= 30 && $academic->BM < 50) ? " (D)" :
+                                                (($academic->BM < 30) ? " (E)" : " (Not Valid)"))))
+                                            );
+                                          @endphp
+                                          {{$grades}}
+                                        </td>
+                                        <td>{{$academic->BA}}
+                                          @php
+                                          $grades = (
+                                          ($academic->BA >= 80) ? " (A)" :
+                                            (($academic->BA >= 65 && $academic->BA < 80) ? " (B)" :
+                                            (($academic->BA >= 50 && $academic->BA < 65) ? " (C)" :
+                                            (($academic->BA >= 30 && $academic->BA < 50) ? " (D)" :
+                                              (($academic->BA < 30) ? " (E)" : " (Not Valid)"))))
+                                          );
+                                          @endphp
+                                          {{$grades}}
+                                        </td>
+                                        <td>{{$academic->MM}}
+                                          @php
+                                          $grades = (
+                                          ($academic->MM >= 80) ? " (A)" :
+                                            (($academic->MM >= 65 && $academic->MM < 80) ? " (B)" :
+                                            (($academic->MM >= 50 && $academic->MM < 65) ? " (C)" :
+                                            (($academic->MM >= 30 && $academic->MM < 50) ? " (D)" :
+                                              (($academic->MM < 30) ? " (E)" : " (Not Valid)"))))
+                                          );
+                                          @endphp
+                                          {{$grades}}
+                                        </td>
+                                        <td>{{$academic->SN}}
+                                          @php
+                                          $grades = (
+                                          ($academic->SN >= 80) ? " (A)" :
+                                            (($academic->SN >= 65 && $academic->SN < 80) ? " (B)" :
+                                            (($academic->SN >= 50 && $academic->SN < 65) ? " (C)" :
+                                            (($academic->SN >= 30 && $academic->SN < 50) ? " (D)" :
+                                              (($academic->SN < 30) ? " (E)" : " (Not Valid)"))))
+                                          );
+                                          @endphp
+                                          {{$grades}}
+                                        </td>
+                                        <td>{{$academic->SEJ}}
+                                          @php
+                                          $grades = (
+                                          ($academic->SEJ >= 80) ? " (A)" :
+                                            (($academic->SEJ >= 65 && $academic->SEJ < 80) ? " (B)" :
+                                            (($academic->SEJ >= 50 && $academic->SEJ < 65) ? " (C)" :
+                                            (($academic->SEJ >= 30 && $academic->SEJ < 50) ? " (D)" :
+                                              (($academic->SEJ < 30) ? " (E)" : " (Not Valid)"))))
+                                          );
+                                          @endphp
+                                          {{$grades}}
+                                        </td>
+                                        <td>{{$academic->PQS}}
+                                          @php
+                                          $grades = (
+                                          ($academic->PQS >= 80) ? " (A)" :
+                                            (($academic->PQS >= 65 && $academic->PQS < 80) ? " (B)" :
+                                            (($academic->PQS >= 50 && $academic->PQS < 65) ? " (C)" :
+                                            (($academic->PQS >= 30 && $academic->PQS < 50) ? " (D)" :
+                                              (($academic->PQS < 30) ? " (E)" : " (Not Valid)"))))
+                                          );
+                                          @endphp
+                                          {{$grades}}
+                                        </td>
+                                        <td>{{$academic->PSI}}
+                                          @php
+                                          $grades = (
+                                          ($academic->PSI >= 80) ? " (A)" :
+                                            (($academic->PSI >= 65 && $academic->PSI < 80) ? " (B)" :
+                                            (($academic->PSI >= 50 && $academic->PSI < 65) ? " (C)" :
+                                            (($academic->PSI >= 30 && $academic->PSI < 50) ? " (D)" :
+                                              (($academic->PSI < 30) ? " (E)" : " (Not Valid)"))))
+                                          );
+                                          @endphp
+                                          {{$grades}}
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    @else
+                                      <tr>
+                                        <td colspan="8" style="text-align: center">No Data</td>
+                                      </tr>
+                                    @endif
                                       </tbody>
                                     </table>
                                 </div>

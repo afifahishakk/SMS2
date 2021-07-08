@@ -68,7 +68,9 @@
     </div>
 </div>
 
+@endsection
 
+@push('scripts')
 <script>
 	var ctx = document.getElementById("myChart");
     var myBarChart = new Chart(ctx,
@@ -79,7 +81,7 @@
 			labels: ['Total Paid Fees'],
 			datasets:
             [{
-                label: 'Total Paid Fees for {{ $month_name }}. " " . {{ $year }}; ?> RM',
+                label: 'Total Paid Fees for {{ $month_name }}/{{ $year }} RM {{$total_paid}}',
                 data: [<?php echo $total_paid; ?>],
                 backgroundColor: [
                     'rgba(54, 162, 235, 1)'
@@ -104,5 +106,4 @@
 		}
 	});
 </script>
-
-@endsection
+@endpush

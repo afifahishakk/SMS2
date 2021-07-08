@@ -1,5 +1,4 @@
 @extends('layout.masterTeacherAcademic')
-
 @section('content')
 
 <div class="col-lg-12 grid-margin stretch-card">
@@ -16,20 +15,22 @@
               <div class="col-md-4">
                 <div class="form-group">
                     <label>Student</label>
-                    <select class="form-control" name="student_ic"  />
+                    <select class="form-control" name="student_id">
                     <option value="">- choose student -</option>
-
+                      @foreach ($students as $item )
+                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                      @endforeach
                     </select>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                     <label>Exam Type</label>
-                    <select class="form-control" name="a_type_id"  />
+                    <select class="form-control" name="a_type_id">
                     <option value="">- choose exam -</option>
-                    {{-- @foreach ($academic_types as $item )
+                    @foreach ($academic_types as $item )
                         <option value="{{ $item->id }}">{{ $item->a_type }}</option>
-                    @endforeach --}}
+                    @endforeach
                     </select>
                 </div>
               </div>
@@ -38,13 +39,13 @@
               <div class="col-md-4">
                 <div class="form-group">
                     <label>Bahasa Melayu</label>
-                    <input type="text" class="form-control" name="BM"  placeholder="Keputusan Bahasa Melayu" required />
+                    <input type="text" class="form-control" name="BM"  placeholder="Markah Bahasa Melayu" required />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                     <label>Bahasa Arab</label>
-                    <input type="text" class="form-control" name="BA" placeholder="Keputusan Bahasa Arab" required />
+                    <input type="text" class="form-control" name="BA" placeholder="Markah Bahasa Arab" required />
                 </div>
               </div>
             </div>
@@ -52,13 +53,13 @@
               <div class="col-md-4">
                 <div class="form-group">
                     <label>Matematik</label>
-                    <input type="text" class="form-control" name="MM"  placeholder="Keputusan Matematik" required />
+                    <input type="text" class="form-control" name="MM"  placeholder="Markah Matematik" required />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                     <label>Sains</label>
-                    <input type="text" class="form-control" name="SN"  placeholder="Keputusan Sains" required />
+                    <input type="text" class="form-control" name="SN"  placeholder="Markah Sains" required />
                 </div>
               </div>
             </div>
@@ -66,13 +67,13 @@
               <div class="col-md-4">
                 <div class="form-group">
                     <label>Sejarah</label>
-                    <input type="text" class="form-control" name="SEJ"placeholder="Keputusan Sejarah" required />
+                    <input type="text" class="form-control" name="SEJ"placeholder="Markah Sejarah" required />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                     <label>Pendidikan Quran Sunnah</label>
-                    <input type="text" class="form-control" name="PQS"placeholder="Keputusan Pendidikan Quran Sunnah" required />
+                    <input type="text" class="form-control" name="PQS"placeholder="Markah Pendidikan Quran Sunnah" required />
                 </div>
               </div>
             </div>
@@ -80,13 +81,13 @@
               <div class="col-md-4">
                 <div class="form-group">
                     <label>Pendidikan Syariah Islamiah</label>
-                    <input type="text" class="form-control" name="PSI"  placeholder="Pendidikan Syariah Islamiah" required />
+                    <input type="text" class="form-control" name="PSI"  placeholder="Markah Pendidikan Syariah Islamiah" required />
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                     <label>Year</label>
-                    <select class="form-control" name="year" required />
+                    <select class="form-control" name="year" required>
                         <option value=''>- choose -</option>
                         <option value='2020'>2020</option>
                         <option value='2021'>2021</option>

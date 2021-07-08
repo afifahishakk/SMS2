@@ -18,27 +18,23 @@
                         <tr>
                             <th>Children</th>
                             <th>Name</th>
-                            <th>Week</th>
-                            <th>Month</th>
-                            <th>Year</th>
                             <th>View</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach($students as $student)
-                        <tr>
-                            <td class='py-1'><img src="/image/students/{{ $student->photo }}"/></td>
-                            <td>{{ $student->name }}</td>
-                            <td>{{ $student->hafazan[0]->select('week')->groupBy('week')->first()->week }}</td>
-                            <td>{{ $student->hafazan[0]->select('month')->groupBy('month')->first()->month }}</td>
-                            <td>{{ $student->hafazan[0]->select('year')->groupBy('year')->first()->year }}</td>
-                            <td>
-                                <a href="/child-hafazan-performance-details/{{ $student->id }}"
-                                data-toggle='tooltip' data-placement='left' title='View'>
-                                    <i class='mdi mdi-comment-text-outline text-primary'></i>
-                                </a>
-                            </td>
-                        </tr>
+                    @if($student->purpose != 'SPM')
+                      <tr>
+                        <td><img src="/image/students/{{ $student->photo }}"/></td>
+                        <td>{{ $student->name }}</td>
+                        <td>
+                            
+                            <a href="{{ url('view-child-performance/' . $student->id) }}" data-toggle='tooltip' data-placement='left' title='View'>
+                                <i class='mdi mdi-comment-text-outline text-primary'></i>
+                            </a>
+                        </td>
+                      </tr>
+                    @endif
                     @endforeach
                     </tbody>
                 </table>
@@ -69,10 +65,15 @@
                     </thead>
                     <tbody>
                     @foreach($students as $student)
+                      @if($student->purpose != 'Tahfiz')
                         <tr>
                             <td class='py-1'><img src="/image/students/{{ $student->photo }}"/></td>
                             <td>{{ $student->name }}</td>
-                            <td>{{ $student->academic[0]->select('year')->groupBy('year')->first()->year }}</td>
+                            @if($student->academic->count() > 0)
+                                <td>{{ $student->academic[0]->select('year')->groupBy('year')->first()->year ? $student->academic[0]->select('year')->groupBy('year')->first()->year : '' }}</td>
+                            @else
+                                <td>N/A</td>
+                            @endif
                             <td>
                                 <a href="/child-academic-performance-details/{{ $student->id }}"
                                 data-toggle='tooltip' data-placement='left' title='View'>
@@ -80,6 +81,7 @@
                                 </a>
                             </td>
                         </tr>
+                      @endif
                     @endforeach
                     </tbody>
                 </table>

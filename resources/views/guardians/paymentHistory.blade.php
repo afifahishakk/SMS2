@@ -21,6 +21,7 @@
                             <th>Pay./ Details</th>
                             <th>Month/Year</th>
                             <th>Option</th>
+                            <th>Fee</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -37,11 +38,22 @@
                             </td>
                             <td>{{ $payment->month }}/{{ $payment->year }}</td>
                             <td><span class='badge badge-success'>{{ $payment->payment_option }}</span></td>
-                            <td>{{ $payment->payment_status }}</td>
+                            <td>{{$payment->p_type_id == '1'? 'Registration' : 'Monthly'}}</td>
+                            <td>
+                                @if($payment->payment_status == "Partial Paid")
+                                  <a href="{{url('/payment-history/'.$payment->id.'/'.$payment->student->id. '/balance' )}}"> {{ $payment->payment_status }}</a>
+                                @else
+                                  {{ $payment->payment_status }}
+                                @endif
+                            </td>
+                            
                         </tr>
+                        
                     @endforeach
+                    
                     </tbody>
                 </table>
+                
             </div>
         </div>
     </div>

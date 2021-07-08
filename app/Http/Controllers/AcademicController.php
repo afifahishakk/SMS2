@@ -21,9 +21,8 @@ class AcademicController extends Controller
     }
     public function listAcademic()
     {
-        $data['academics'] = Academic::orderBy('id','asc')->paginate(5);
-
-        return view('academicPerformance.listAcademicPerformance', $data);
+        $students = Student::where('purpose','!=' ,'Tahfiz')->get();
+        return view('academicPerformance.listAcademicPerformance', compact('students'));
     }
 
     /**
@@ -34,7 +33,10 @@ class AcademicController extends Controller
     public function create()
     {
         // $academic_types = Academic_Type::all();
-        return view('academicPerformance.create', );
+        $students = Student::where('purpose','!=' ,'Tahfiz')->get();
+        $academic_types = Academic_Type::all();
+        // dd($academic_types);
+        return view('academicPerformance.create', compact('students','academic_types'));
     }
 
     /**
@@ -46,7 +48,7 @@ class AcademicController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'student_ic' => 'required',
+            'student_id' => 'required',
             'a_type_id' => 'required',
             'BM' => 'required',
             'BA' => 'required',
@@ -58,7 +60,7 @@ class AcademicController extends Controller
             'year' => 'required',
         ]);
 
-        $student_ic = $request->student_ic;
+        $student_id = $request->student_id;
         $a_type_id = $request->a_type_id;
         $BM = $request->BM;
         $BA = $request->BA;
@@ -71,7 +73,7 @@ class AcademicController extends Controller
 
         $academic = new Academic;
 
-        $academic->student_ic = $student_ic;
+        $academic->student_id = $student_id;
         $academic->a_type_id = $a_type_id;
         $academic->BM = $BM;
         $academic->BA = $BA;
@@ -97,8 +99,8 @@ class AcademicController extends Controller
     public function show($id)
     {
         $student = Student::find($id);
-        $academic = Academic::find($id);
-        return view('academicPerformance.showacademicPerformance',compact('academic', 'student'));
+        
+        return view('academicPerformance.showacademicPerformance',compact('student'));
     }
 
     /**
@@ -109,7 +111,9 @@ class AcademicController extends Controller
      */
     public function edit(Academic $academic)
     {
-        return view('academicPerformance.edit',compact('academic'));
+        $students = Student::where('purpose','!=' ,'Tahfiz')->get();
+        $academic_types = Academic_Type::all();
+        return view('academicPerformance.edit',compact('academic','students','academic_types'));
     }
 
     /**
@@ -123,7 +127,7 @@ class AcademicController extends Controller
     {
         $academic = Academic::find($id);
 
-        $student_ic = $request->student_ic;
+        $student_id = $request->student_id;
         $a_type_id = $request->a_type_id;
         $BM = $request->BM;
         $BA = $request->BA;
@@ -134,7 +138,7 @@ class AcademicController extends Controller
         $PSI = $request->PSI;
         $year = $request->year;
 
-        $academic->student_ic = $student_ic;
+        $academic->student_id = $student_id;
         $academic->a_type_id = $a_type_id;
         $academic->BM = $BM;
         $academic->BA = $BA;

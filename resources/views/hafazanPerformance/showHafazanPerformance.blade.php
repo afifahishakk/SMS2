@@ -6,7 +6,7 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">View Student Hafazan Performance</h4>
-        <form method="post" enctype="multipart/form-data">
+        <form action="{{ route('hafazan.store') }}" method="post" enctype="multipart/form-data">
 
             <p class="card-description text-primary">
               <i class='menu-icon mdi mdi-book-open-page-variant'></i> Update Student Hafazan Performance Details
@@ -16,25 +16,25 @@
               <div class="col-md-6">
                 <div class="form-group">
                     <label>Student</label>
-                    <p>{{ $hafazans->student->name }}</p>
+                    <p>{{ $student->name }}</p>
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-group">
                     <label><b>Week</b></label>
-                    <p>{{ $hafazans->week }}</p>
+                    <p>{{ $hafazans[0]->week }}</p>
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-group">
                     <label><b>Month</b></label>
-                    <p>{{ $hafazans->month }}</p>
+                    <p>{{ $hafazans[0]->month }}</p>
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-group">
                     <label><b>Year</b></label>
-                    <p>{{ $hafazans->year }}</p>
+                    <p>{{ $hafazans[0]->year }}</p>
                 </div>
               </div>
             </div>
@@ -62,323 +62,76 @@
                                         <td>Page</td>
                                         <td>Juz</td>
                                     </tr>
-                                    <tr class="table-warning">
-                                        <td><?php //echo $sunDateStringFormat . " (Sun)"; ?></td>
-                                        <td>Talaqqi</td>
-                                        <td>talaqi_start_juz</td>
-                                        <td>talaqi_start_surah</td>
-                                        <td>talaqi_start_halaman</td>
-                                        <td>talaqi_end_juz</td>
-                                        <td>talaqi_end_surah</td>
-                                        <td>talaqi_end_halaman</td>
-                                    </tr>
-                                    <tr class="table-warning">
-                                        <td></td>
-                                        <td>New Hafazan</td>
-                                        <td>hafazan_start_juz</td>
-                                        <td>hafazan_start_surah</td>
-                                        <td>hafazan_start_halaman</td>
-                                        <td>hafazan_end_juz</td>
-                                        <td>hafazan_end_surah</td>
-                                        <td>hafazan_end_halaman</td>
-                                    </tr>
-                                    <tr class="table-warning">
-                                        <td></td>
-                                        <td>Repeat New Hafazan</td>
-                                        <td>ulangan_baru_start_juz</td>
-                                        <td>ulangan_baru_start_surah</td>
-                                        <td>ulangan_baru_start_halaman</td>
-                                        <td>ulangan_baru_end_juz</td>
-                                        <td>ulangan_baru_end_surah</td>
-                                        <td>ulangan_baru_end_halaman</td>
-                                    </tr>
-                                    <tr class="table-warning">
-                                        <td></td>
-                                        <td>Repeat Previous Hafazan</td>
-                                        <td>ulangan_lama_start_juz</td>
-                                        <td>ulangan_lama_start_surah</td>
-                                        <td>ulangan_lama_start_halaman</td>
-                                        <td>ulangan_lama_end_juz</td>
-                                        <td>ulangan_lama_end_surah</td>
-                                        <td>ulangan_lama_end_halaman</td>
-                                    </tr>
-                                    <tr class="table-warning">
-                                        <td></td>
-                                        <td>Remark</td>
-                                        <td colspan="3">remark</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr class="table-secondary">
-                                        <td><?php // $monDateStringFormat . " (Mon)"; ?></td>
-                                        <td>Talaqqi</td>
-                                        <td>talaqi_start_juz</td>
-                                        <td>talaqi_start_surah</td>
-                                        <td>talaqi_start_halaman</td>
-                                        <td>talaqi_end_juz</td>
-                                        <td>talaqi_end_surah</td>
-                                        <td>talaqi_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-secondary">
-                                        <td></td>
-                                        <td>New Hafazan</td>
-                                        <td>hafazan_start_juz</td>
-                                        <td>hafazan_start_surah</td>
-                                        <td>hafazan_start_halaman</td>
-                                        <td>hafazan_end_juz</td>
-                                        <td>hafazan_end_surah</td>
-                                        <td>hafazan_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-secondary">
-                                        <td></td>
-                                        <td>Repeat New Hafazan</td>
-                                        <td>ulangan_baru_start_juz</td>
-                                        <td>ulangan_baru_start_surah</td>
-                                        <td>ulangan_baru_start_halaman</td>
-                                        <td>ulangan_baru_end_juz</td>
-                                        <td>ulangan_baru_end_surah</td>
-                                        <td>ulangan_baru_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-secondary">
-                                        <td></td>
-                                        <td>Repeat Previous Hafazan</td>
-                                        <td>ulangan_lama_start_juz</td>
-                                        <td>ulangan_lama_start_surah</td>
-                                        <td>ulangan_lama_start_halaman</td>
-                                        <td>ulangan_lama_end_juz</td>
-                                        <td>ulangan_lama_end_surah</td>
-                                        <td>ulangan_lama_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-secondary">
-                                        <td></td>
-                                        <td>Remark</td>
-                                        <td colspan="3">remark</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-
-
-                                    <tr class="table-warning">
-                                        <td><?php // $tueDateStringFormat . " (Tue)"; ?></td>
-                                        <td>Talaqqi</td>
-                                        <td>talaqi_start_juz</td>
-                                        <td>talaqi_start_surah</td>
-                                        <td>talaqi_start_halaman</td>
-                                        <td>talaqi_end_juz</td>
-                                        <td>talaqi_end_surah</td>
-                                        <td>talaqi_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-warning">
-                                        <td></td>
-                                        <td>New Hafazan</td>
-                                        <td>hafazan_start_juz</td>
-                                        <td>hafazan_start_surah</td>
-                                        <td>hafazan_start_halaman</td>
-                                        <td>hafazan_end_juz</td>
-                                        <td>hafazan_end_surah</td>
-                                        <td>hafazan_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-warning">
-                                        <td></td>
-                                        <td>Repeat New Hafazan</td>
-                                        <td>ulangan_baru_start_juz</td>
-                                        <td>ulangan_baru_start_surah</td>
-                                        <td>ulangan_baru_start_halaman</td>
-                                        <td>ulangan_baru_end_juz</td>
-                                        <td>ulangan_baru_end_surah</td>
-                                        <td>ulangan_baru_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-warning">
-                                        <td></td>
-                                        <td>Repeat Previous Hafazan</td>
-                                        <td>ulangan_lama_start_juz</td>
-                                        <td>ulangan_lama_start_surah</td>
-                                        <td>ulangan_lama_start_halaman</td>
-                                        <td>ulangan_lama_end_juz</td>
-                                        <td>ulangan_lama_end_surah</td>
-                                        <td>ulangan_lama_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-warning">
-                                        <td></td>
-                                        <td>Remark</td>
-                                        <td colspan="3">remark</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-
-
-                                    <tr class="table-secondary">
-                                        <td><?php // $wedDateStringFormat . " (Wed)"; ?></td>
-                                        <td>Talaqqi</td>
-                                        <td>talaqi_start_juz</td>
-                                        <td>talaqi_start_surah</td>
-                                        <td>talaqi_start_halaman</td>
-                                        <td>talaqi_end_juz</td>
-                                        <td>talaqi_end_surah</td>
-                                        <td>talaqi_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-secondary">
-                                        <td></td>
-                                        <td>New Hafazan</td>
-                                        <td>hafazan_start_juz</td>
-                                        <td>hafazan_start_surah</td>
-                                        <td>hafazan_start_halaman</td>
-                                        <td>hafazan_end_juz</td>
-                                        <td>hafazan_end_surah</td>
-                                        <td>hafazan_end_halaman</td>
-                                    </tr>
-                                    </tr>
-
-                                    <tr class="table-secondary">
-                                        <td></td>
-                                        <td>Repeat New Hafazan</td>
-                                        <td>ulangan_baru_start_juz</td>
-                                        <td>ulangan_baru_start_surah</td>
-                                        <td>ulangan_baru_start_halaman</td>
-                                        <td>ulangan_baru_end_juz</td>
-                                        <td>ulangan_baru_end_surah</td>
-                                        <td>ulangan_baru_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-secondary">
-                                        <td></td>
-                                        <td>Repeat Previous Hafazan</td>
-                                        <td>ulangan_lama_start_juz</td>
-                                        <td>ulangan_lama_start_surah</td>
-                                        <td>ulangan_lama_start_halaman</td>
-                                        <td>ulangan_lama_end_juz</td>
-                                        <td>ulangan_lama_end_surah</td>
-                                        <td>ulangan_lama_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-secondary">
-                                        <td></td>
-                                        <td>Remark</td>
-                                        <td colspan="3">remark</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-
-
-                                    <tr class="table-warning">
-                                        <td><?php // $thuDateStringFormat . " (Thu)"; ?></td>
-                                        <td>Talaqqi</td>
-                                        <td>talaqi_start_juz</td>
-                                        <td>talaqi_start_surah</td>
-                                        <td>talaqi_start_halaman</td>
-                                        <td>talaqi_end_juz</td>
-                                        <td>talaqi_end_surah</td>
-                                        <td>talaqi_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-warning">
-                                        <td></td>
-                                        <td>New Hafazan</td>
-                                        <td>hafazan_start_juz</td>
-                                        <td>hafazan_start_surah</td>
-                                        <td>hafazan_start_halaman</td>
-                                        <td>hafazan_end_juz</td>
-                                        <td>hafazan_end_surah</td>
-                                        <td>hafazan_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-warning">
-                                        <td></td>
-                                        <td>Repeat New Hafazan</td>
-                                        <td>ulangan_baru_start_juz</td>
-                                        <td>ulangan_baru_start_surah</td>
-                                        <td>ulangan_baru_start_halaman</td>
-                                        <td>ulangan_baru_end_juz</td>
-                                        <td>ulangan_baru_end_surah</td>
-                                        <td>ulangan_baru_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-warning">
-                                        <td></td>
-                                        <td>Repeat Previous Hafazan</td>
-                                        <td>ulangan_lama_start_juz</td>
-                                        <td>ulangan_lama_start_surah</td>
-                                        <td>ulangan_lama_start_halaman</td>
-                                        <td>ulangan_lama_end_juz</td>
-                                        <td>ulangan_lama_end_surah</td>
-                                        <td>ulangan_lama_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-warning">
-                                        <td></td>
-                                        <td>Remark</td>
-                                        <td colspan="3">remark</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-
-
-                                    <tr class="table-secondary">
-                                        <td><?php // $friDateStringFormat . " (Fri)"; ?></td>
-                                        <td>Talaqqi</td>
-                                        <td>talaqi_start_juz</td>
-                                        <td>talaqi_start_surah</td>
-                                        <td>talaqi_start_halaman</td>
-                                        <td>talaqi_end_juz</td>
-                                        <td>talaqi_end_surah</td>
-                                        <td>talaqi_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-secondary">
-                                        <td></td>
-                                        <td>New Hafazan</td>
-                                        <td>hafazan_start_juz</td>
-                                        <td>hafazan_start_surah</td>
-                                        <td>hafazan_start_halaman</td>
-                                        <td>hafazan_end_juz</td>
-                                        <td>hafazan_end_surah</td>
-                                        <td>hafazan_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-secondary">
-                                        <td></td>
-                                        <td>Repeat New Hafazan</td>
-                                        <td>ulangan_baru_start_juz</td>
-                                        <td>ulangan_baru_start_surah</td>
-                                        <td>ulangan_baru_start_halaman</td>
-                                        <td>ulangan_baru_end_juz</td>
-                                        <td>ulangan_baru_end_surah</td>
-                                        <td>ulangan_baru_end_halaman</td>
-                                    </tr>
-
-                                    <tr class="table-secondary">
-                                        <td></td>
-                                        <td>Repeat Previous Hafazan</td>
-                                        <td>ulangan_lama_start_juz</td>
-                                        <td>ulangan_lama_start_surah</td>
-                                        <td>ulangan_lama_start_halaman</td>
-                                        <td>ulangan_lama_end_juz]; ?></td>
-                                        <td>ulangan_lama_end_surah]; ?></td>
-                                        <td>ulangan_lama_end_halaman]; ?></td>
-                                    </tr>
-
-                                    <tr class="table-secondary">
-                                        <td></td>
-                                        <td>Remark</td>
-                                        <td colspan="3">remark</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                                    @foreach($hafazans as $key=>$hafazan)
+																			@if($key % 2)
+																				<tr class="table-warning">
+																			@else
+																				<tr class="table-secondary">
+																			@endif
+                                            <td>{{$hafazan->day}}</td>
+                                            <td>Talaqqi</td>
+                                            <td>{{$hafazan->talaqi_start_juz}}</td>
+                                            <td>{{$hafazan->talaqi_start_surah}}</td>
+                                            <td>{{$hafazan->talaqi_start_halaman}}</td>
+                                            <td>{{$hafazan->talaqi_end_juz}}</td>
+                                            <td>{{$hafazan->talaqi_end_surah}}</td>
+                                            <td>{{$hafazan->talaqi_end_halaman}}</td>
+                                        </tr>
+                                        @if($key % 2)
+																				<tr class="table-warning">
+																				@else
+																					<tr class="table-secondary">
+																				@endif
+                                            <td></td>
+                                            <td>New Hafazan</td>
+                                            <td>{{$hafazan->hafazan_start_juz}}</td>
+                                            <td>{{$hafazan->hafazan_start_surah}}</td>
+                                            <td>{{$hafazan->hafazan_start_halaman}}</td>
+                                            <td>{{$hafazan->hafazan_end_juz}}</td>
+                                            <td>{{$hafazan->hafazan_end_surah}}</td>
+                                            <td>{{$hafazan->hafazan_end_halaman}}</td>
+                                        </tr>
+                                        @if($key % 2)
+																					<tr class="table-warning">
+																				@else
+																					<tr class="table-secondary">
+																				@endif
+                                            <td></td>
+                                            <td>Repeat New Hafazan</td>
+                                            <td>{{$hafazan->ulangan_baru_start_juz}}</td>
+                                            <td>{{$hafazan->ulangan_baru_start_surah}}</td>
+                                            <td>{{$hafazan->ulangan_baru_start_halaman}}</td>
+                                            <td>{{$hafazan->ulangan_baru_end_juz}}</td>
+                                            <td>{{$hafazan->ulangan_baru_end_surah}}</td>
+                                            <td>{{$hafazan->ulangan_baru_end_halaman}}</td>
+                                        </tr>
+                                        @if($key % 2)
+																					<tr class="table-warning">
+																				@else
+																					<tr class="table-secondary">
+																				@endif
+                                            <td></td>
+                                            <td>Repeat Previous Hafazan</td>
+                                            <td>{{$hafazan->ulangan_lama_start_juz}}</td>
+                                            <td>{{$hafazan->ulangan_lama_start_surah}}</td>
+                                            <td>{{$hafazan->ulangan_lama_start_halaman}}</td>
+                                            <td>{{$hafazan->ulangan_lama_end_juz}}</td>
+                                            <td>{{$hafazan->ulangan_lama_end_surah}}</td>
+                                            <td>{{$hafazan->ulangan_lama_end_halaman}}</td>
+                                        </tr>
+                                        @if($key % 2)
+																					<tr class="table-warning">
+																				@else
+																					<tr class="table-secondary">
+																				@endif
+                                            <td></td>
+                                            <td>Remark</td>
+                                            <td colspan="3">{{$hafazan->remark}}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

@@ -29,7 +29,18 @@
                         <td>{{ $student->name }}</td>
                         <td>{{ $student->ic_no }}</td>
                         <td>{{ $student->dob }}</td>
-                        <td><span class='badge badge-success'>{{ $student->status }}</td>
+                        <td>
+                          <span class='badge 
+                          @php
+                            $status = (
+                            ($student->status == "Approved") ? "badge-success" :
+                              (($student->status == "Pending") ? "badge-warning" :
+                                (($student->status == "Declined") ? "badge-danger" : ""))
+                            );
+                          @endphp
+                          {{$status}}'>
+                          {{ $student->status }}
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
